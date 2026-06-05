@@ -1,0 +1,42 @@
+# Environment & secrets
+.env
+.env.*
+!.env.example
+*.pem
+credentials.json
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*~
+
+# Dependencies (if you add tooling later)
+node_modules/
+__pycache__/
+.venv/
+vendor/
+
+# Large / binary exports (keep in cloud storage; link in docs)
+*.psd
+*.ai
+*.indd
+*.zip
+*.7z
+exports/
+archive/
+
+# Client-sensitive dumps (use clients/<slug>/assets with care)
+**/private/
+**/confidential/
+
+# Logs & temp
+*.log
+tmp/
+temp/
+.cache/
