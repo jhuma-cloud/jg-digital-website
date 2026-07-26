@@ -274,6 +274,12 @@
         </div>
 
         <form class="contact-form" id="contact-form" novalidate>
+          <!-- Honeypot — hidden from real users -->
+          <div class="hp-field" aria-hidden="true">
+            <label for="website">Website</label>
+            <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+          </div>
+
           <div class="form-group">
             <label for="name">Full name</label>
             <input type="text" id="name" name="name" autocomplete="name" required placeholder="Jane Smith">
@@ -287,17 +293,29 @@
           </div>
 
           <div class="form-group">
+            <label for="phone">Phone number</label>
+            <input type="tel" id="phone" name="phone" autocomplete="tel" placeholder="+91 98765 43210">
+            <span class="form-error" id="phone-error" role="alert"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="company">Company name <span class="label-optional">(optional)</span></label>
+            <input type="text" id="company" name="company" autocomplete="organization" placeholder="Your company">
+            <span class="form-error" id="company-error" role="alert"></span>
+          </div>
+
+          <div class="form-group">
             <label for="service">Service of interest</label>
             <select id="service" name="service" required>
               <option value="" disabled selected>Select a service</option>
-              <option value="google-ads">Google Ads</option>
-              <option value="facebook-ads">Facebook Ads</option>
-              <option value="instagram-ads">Instagram Ads</option>
-              <option value="seo">SEO</option>
-              <option value="whatsapp">WhatsApp Marketing</option>
-              <option value="ai-automation">AI Automation</option>
-              <option value="landing-pages">Landing Page Design</option>
-              <option value="full-service">Full-service partnership</option>
+              <option value="Google Ads">Google Ads</option>
+              <option value="Facebook Ads">Facebook Ads</option>
+              <option value="Instagram Ads">Instagram Ads</option>
+              <option value="SEO">SEO</option>
+              <option value="WhatsApp Marketing">WhatsApp Marketing</option>
+              <option value="AI Automation">AI Automation</option>
+              <option value="Landing Page Design">Landing Page Design</option>
+              <option value="Full-service partnership">Full-service partnership</option>
             </select>
             <span class="form-error" id="service-error" role="alert"></span>
           </div>
@@ -308,10 +326,13 @@
             <span class="form-error" id="message-error" role="alert"></span>
           </div>
 
-          <button type="submit" class="btn btn-primary btn-full">Send Message</button>
+          <button type="submit" class="btn btn-primary btn-full" id="form-submit">Send Message</button>
 
           <p class="form-success" id="form-success" role="status" hidden>
             Thank you! Your message has been received. We'll be in touch soon.
+          </p>
+          <p class="form-submit-error" id="form-submit-error" role="alert" hidden>
+            Something went wrong. Please try again or contact us directly on WhatsApp.
           </p>
         </form>
       </div>

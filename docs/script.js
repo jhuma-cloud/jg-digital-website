@@ -121,11 +121,14 @@
   }
 
   /* ------------------------------------------------------------------
-     Contact form validation (front-end only)
+     Contact form → Google Apps Script (Sheet + email)
      ------------------------------------------------------------------ */
   if (!contactForm) return;
 
-  const fields = {
+  var GOOGLE_SCRIPT_URL =
+    'https://script.google.com/macros/s/AKfycbwVzk9BUyneSRKBV1UKd3ght5ODQDr2xGp5xNuC_sl3VGcme8kH2saF8DF3UloTKMWflw/exec';
+
+  var fields = {
     name: {
       el: document.getElementById('name'),
       error: document.getElementById('name-error'),
@@ -143,6 +146,20 @@
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim())) {
           return 'Please enter a valid email address.';
         }
+        return '';
+      }
+    },
+    phone: {
+      el: document.getElementById('phone'),
+      error: document.getElementById('phone-error'),
+      validate: function () {
+        return '';
+      }
+    },
+    company: {
+      el: document.getElementById('company'),
+      error: document.getElementById('company-error'),
+      validate: function () {
         return '';
       }
     },
@@ -165,22 +182,53 @@
     }
   };
 
-  const formSuccess = document.getElementById('form-success');
+  var formSuccess = document.getElementById('form-success');
+  var formSubmitError = document.getElementById('form-submit-error');
+  var submitBtn = document.getElementById('form-submit');
+  var honeypot = document.getElementById('website');
+  var isSubmitting = false;
 
   function setFieldState(field, message) {
+    if (!field || !field.el) return;
     field.el.classList.toggle('invalid', Boolean(message));
-    field.error.textContent = message;
+    if (field.error) field.error.textContent = message;
   }
 
   function validateField(key) {
-    const field = fields[key];
-    const message = field.validate(field.el.value);
+    var field = fields[key];
+    if (!field || !field.el) return true;
+    var message = field.validate(field.el.value);
     setFieldState(field, message);
     return !message;
   }
 
+  function setSubmitting(loading) {
+    isSubmitting = loading;
+    if (!submitBtn) return;
+    submitBtn.disabled = loading;
+    submitBtn.textContent = loading ? 'Sending...' : 'Send Message';
+  }
+
+  function showSuccess() {
+    if (formSubmitError) formSubmitError.hidden = true;
+    if (formSuccess) {
+      formSuccess.hidden = false;
+      formSuccess.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  }
+
+  function showError() {
+    if (formSuccess) formSuccess.hidden = true;
+    if (formSubmitError) {
+      formSubmitError.hidden = false;
+      formSubmitError.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  }
+
   Object.keys(fields).forEach(function (key) {
-    const field = fields[key];
+    var field = fields[key];
+    if (!field.el) return;
+
     field.el.addEventListener('blur', function () {
       validateField(key);
     });
@@ -194,31 +242,75 @@
 
   contactForm.addEventListener('submit', function (e) {
     e.preventDefault();
+    if (isSubmitting) return;
 
-    if (formSuccess) {
-      formSuccess.hidden = true;
-    }
+    if (formSuccess) formSuccess.hidden = true;
+    if (formSubmitError) formSubmitError.hidden = true;
 
-    const results = Object.keys(fields).map(validateField);
-    const isValid = results.every(Boolean);
+    var results = Object.keys(fields).map(validateField);
+    var isValid = results.every(Boolean);
 
     if (!isValid) {
-      const firstInvalid = contactForm.querySelector('.invalid');
-      if (firstInvalid) {
-        firstInvalid.focus();
-      }
+      var firstInvalid = contactForm.querySelector('.invalid');
+      if (firstInvalid) firstInvalid.focus();
       return;
     }
 
-    /* Simulate successful submission (no backend) */
-    contactForm.reset();
-    Object.keys(fields).forEach(function (key) {
-      setFieldState(fields[key], '');
-    });
-
-    if (formSuccess) {
-      formSuccess.hidden = false;
-      formSuccess.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    /* Honeypot: bots fill this — pretend success without sending */
+    if (honeypot && honeypot.value.trim()) {
+      contactForm.reset();
+      showSuccess();
+      return;
     }
+
+    var payload = {
+      name: fields.name.el.value.trim(),
+      email: fields.email.el.value.trim(),
+      phone: fields.phone.el ? fields.phone.el.value.trim() : '',
+      company: fields.company.el ? fields.company.el.value.trim() : '',
+      service: fields.service.el.value,
+      message: fields.message.el.value.trim(),
+      form_type: 'contact',
+      submittedAt: new Date().toISOString(),
+      honeypot: ''
+    };
+
+    setSubmitting(true);
+
+    fetch(GOOGLE_SCRIPT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(payload),
+      redirect: 'follow'
+    })
+      .then(function (res) {
+        return res.text().then(function (text) {
+          var ok = res.ok;
+          try {
+            var json = JSON.parse(text);
+            if (typeof json.ok === 'boolean') ok = json.ok;
+          } catch (err) {
+            /* GAS may return opaque/redirect body; HTTP ok is enough */
+          }
+          return ok;
+        });
+      })
+      .then(function (ok) {
+        if (!ok) {
+          showError();
+          return;
+        }
+        contactForm.reset();
+        Object.keys(fields).forEach(function (key) {
+          setFieldState(fields[key], '');
+        });
+        showSuccess();
+      })
+      .catch(function () {
+        showError();
+      })
+      .finally(function () {
+        setSubmitting(false);
+      });
   });
 })();

@@ -859,6 +859,37 @@ textarea {
   border-radius: var(--radius-sm);
 }
 
+.form-submit-error {
+  margin-top: 1rem;
+  padding: 1rem;
+  font-size: 0.9375rem;
+  text-align: center;
+  color: var(--accent-coral);
+  background: rgba(251, 113, 133, 0.08);
+  border: 1px solid rgba(251, 113, 133, 0.35);
+  border-radius: var(--radius-sm);
+}
+
+.label-optional {
+  font-weight: 400;
+  color: var(--text-muted);
+}
+
+.hp-field {
+  position: absolute;
+  left: -9999px;
+  top: -9999px;
+  height: 0;
+  width: 0;
+  overflow: hidden;
+}
+
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
 /* ==========================================================================
    Footer
    ========================================================================== */
