@@ -526,16 +526,51 @@ textarea {
 
 .about-grid {
   display: grid;
-  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-  gap: 3.5rem 4.5rem;
-  align-items: start;
+  grid-template-columns: minmax(220px, 0.75fr) minmax(0, 1.25fr);
+  gap: 3rem 4rem;
+  align-items: center;
+}
+
+.about-media {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.about-media::before {
+  content: '';
+  position: absolute;
+  inset: 6%;
+  border-radius: 50%;
+  background: var(--gradient-brand);
+  opacity: 0.22;
+  filter: blur(22px);
+  z-index: 0;
+}
+
+.about-photo {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 320px);
+  aspect-ratio: 1;
+  object-fit: cover;
+  object-position: center top;
+  border-radius: 50%;
+  border: 3px solid rgba(201, 169, 98, 0.42);
+  box-shadow:
+    0 22px 55px rgba(0, 0, 0, 0.48),
+    0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+}
+
+.about-content {
+  min-width: 0;
 }
 
 .about-intro {
   max-width: none;
   margin-bottom: 0;
-  position: sticky;
-  top: calc(var(--header-h) + 2rem);
+  position: static;
 }
 
 .about-copy p {
@@ -552,7 +587,12 @@ textarea {
 @media (max-width: 860px) {
   .about-grid {
     grid-template-columns: 1fr;
-    gap: 1.5rem;
+    gap: 2rem;
+  }
+
+  .about-media {
+    max-width: 280px;
+    margin-inline: auto;
   }
 
   .about-intro {
