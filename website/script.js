@@ -126,7 +126,7 @@
   if (!contactForm) return;
 
   var GOOGLE_SCRIPT_URL =
-    'https://script.google.com/macros/s/AKfycbwVzk9BUyneSRKBV1UKd3ght5ODQDr2xGp5xNuC_sl3VGcme8kH2saF8DF3UloTKMWflw/exec';
+    'https://script.google.com/macros/s/AKfycby8kV_GEzPWEUzZse4k46K5OfIf2ghr6fNqvXFcdydZtFVZ3H7I6PwwyVpmKFZeCdgk3w/exec';
 
   var fields = {
     name: {
