@@ -277,29 +277,22 @@
 
     setSubmitting(true);
 
+    /**
+     * Google Apps Script Web Apps work best from static sites with:
+     * - Content-Type: text/plain (avoids CORS preflight)
+     * - mode: 'no-cors' (GAS redirect responses are often opaque)
+     *
+     * IMPORTANT: Web App must be deployed with access = "Anyone".
+     * Test the URL in Incognito — it must return JSON, not a login page.
+     * See docs/GOOGLE-SHEETS-SETUP.md
+     */
     fetch(GOOGLE_SCRIPT_URL, {
       method: 'POST',
+      mode: 'no-cors',
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify(payload),
-      redirect: 'follow'
+      body: JSON.stringify(payload)
     })
-      .then(function (res) {
-        return res.text().then(function (text) {
-          var ok = res.ok;
-          try {
-            var json = JSON.parse(text);
-            if (typeof json.ok === 'boolean') ok = json.ok;
-          } catch (err) {
-            /* GAS may return opaque/redirect body; HTTP ok is enough */
-          }
-          return ok;
-        });
-      })
-      .then(function (ok) {
-        if (!ok) {
-          showError();
-          return;
-        }
+      .then(function () {
         contactForm.reset();
         Object.keys(fields).forEach(function (key) {
           setFieldState(fields[key], '');
