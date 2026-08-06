@@ -121,6 +121,59 @@
   }
 
   /* ------------------------------------------------------------------
+     Hero stat counter animation
+     ------------------------------------------------------------------ */
+  var statNumbers = document.querySelectorAll('.stat-number[data-count]');
+
+  function animateStat(el) {
+    var target = parseInt(el.getAttribute('data-count'), 10);
+    var suffix = el.getAttribute('data-suffix') || '';
+    var duration = 1400;
+    var start = null;
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      el.textContent = target + suffix;
+      return;
+    }
+
+    function step(timestamp) {
+      if (!start) start = timestamp;
+      var progress = Math.min((timestamp - start) / duration, 1);
+      var eased = 1 - Math.pow(1 - progress, 3);
+      var current = Math.round(target * eased);
+      el.textContent = current + suffix;
+      if (progress < 1) {
+        window.requestAnimationFrame(step);
+      }
+    }
+
+    el.textContent = '0' + suffix;
+    window.requestAnimationFrame(step);
+  }
+
+  if (statNumbers.length) {
+    if ('IntersectionObserver' in window) {
+      var statsObserver = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              animateStat(entry.target);
+              statsObserver.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.4 }
+      );
+
+      statNumbers.forEach(function (el) {
+        statsObserver.observe(el);
+      });
+    } else {
+      statNumbers.forEach(animateStat);
+    }
+  }
+
+  /* ------------------------------------------------------------------
      Contact form → Google Apps Script (Sheet + email)
      ------------------------------------------------------------------ */
   if (!contactForm) return;
