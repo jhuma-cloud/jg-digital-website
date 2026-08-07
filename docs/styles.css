@@ -839,16 +839,21 @@ textarea {
 
 .services-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
-  gap: 1.25rem;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+  gap: 1.35rem;
+  align-items: stretch;
 }
 
 .service-card {
   position: relative;
-  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 2rem 1.75rem;
   background: var(--bg-card);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
   transition:
     transform var(--duration) var(--ease-out),
     background var(--duration) var(--ease-out),
@@ -867,7 +872,7 @@ textarea {
 }
 
 .service-card:hover {
-  transform: translateY(-4px);
+  transform: translateY(-5px);
   background: var(--bg-card-hover);
   border-color: var(--border-accent);
   box-shadow: var(--shadow-glow);
@@ -877,73 +882,73 @@ textarea {
   opacity: 1;
 }
 
-.service-card--featured {
-  grid-column: 1 / -1;
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 0 2rem;
-  align-items: center;
-  background: var(--gradient-subtle);
-  border-color: var(--border-accent);
-}
-
-.service-card--featured .service-icon {
-  grid-row: span 2;
-}
-
-.service-card--featured .service-desc {
-  grid-column: 2;
-}
-
-@media (max-width: 600px) {
-  .service-card--featured {
-    grid-template-columns: 1fr;
-    gap: 0;
-  }
-
-  .service-card--featured .service-icon {
-    grid-row: auto;
-  }
-
-  .service-card--featured .service-desc {
-    grid-column: auto;
-  }
-}
-
 .service-icon {
   position: relative;
   z-index: 1;
-  width: 48px;
-  height: 48px;
-  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 52px;
+  height: 52px;
+  margin-bottom: 1.35rem;
+  color: var(--accent-gold);
+  background: rgba(201, 169, 98, 0.08);
+  border: 1px solid rgba(201, 169, 98, 0.22);
+  border-radius: var(--radius-md);
+  transition:
+    color var(--duration) var(--ease-out),
+    border-color var(--duration) var(--ease-out),
+    background var(--duration) var(--ease-out);
+}
+
+.service-card:hover .service-icon {
   color: var(--accent-cyan);
+  border-color: rgba(94, 234, 212, 0.35);
+  background: rgba(94, 234, 212, 0.08);
+}
+
+.service-icon svg {
+  width: 28px;
+  height: 28px;
 }
 
 .service-title {
   position: relative;
   z-index: 1;
   font-family: var(--font-display);
-  font-size: 1.1875rem;
+  font-size: 1.2rem;
   font-weight: 600;
-  margin-bottom: 0.625rem;
+  letter-spacing: -0.015em;
+  margin-bottom: 0.75rem;
 }
 
 .service-desc {
   position: relative;
   z-index: 1;
+  flex: 1;
   font-size: 0.9375rem;
   color: var(--text-secondary);
-  line-height: 1.65;
+  line-height: 1.68;
+}
+
+.services-cta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 3rem;
 }
 
 /* Stagger animation delays for service cards */
 .services-grid .service-card:nth-child(1) { transition-delay: 0ms; }
-.services-grid .service-card:nth-child(2) { transition-delay: 80ms; }
-.services-grid .service-card:nth-child(3) { transition-delay: 160ms; }
-.services-grid .service-card:nth-child(4) { transition-delay: 240ms; }
-.services-grid .service-card:nth-child(5) { transition-delay: 320ms; }
-.services-grid .service-card:nth-child(6) { transition-delay: 400ms; }
-.services-grid .service-card:nth-child(7) { transition-delay: 480ms; }
+.services-grid .service-card:nth-child(2) { transition-delay: 60ms; }
+.services-grid .service-card:nth-child(3) { transition-delay: 120ms; }
+.services-grid .service-card:nth-child(4) { transition-delay: 180ms; }
+.services-grid .service-card:nth-child(5) { transition-delay: 240ms; }
+.services-grid .service-card:nth-child(6) { transition-delay: 300ms; }
+.services-grid .service-card:nth-child(7) { transition-delay: 360ms; }
+.services-grid .service-card:nth-child(8) { transition-delay: 420ms; }
 
 /* ==========================================================================
    Testimonials
@@ -1526,7 +1531,18 @@ textarea {
   }
 
   .service-card {
-    padding: 1.5rem;
+    padding: 1.5rem 1.35rem;
+  }
+
+  .service-icon {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 1.15rem;
+  }
+
+  .service-icon svg {
+    width: 24px;
+    height: 24px;
   }
 
   .service-title {
@@ -1535,6 +1551,16 @@ textarea {
 
   .service-desc {
     font-size: 0.9375rem;
+  }
+
+  .services-cta {
+    margin-top: 2.25rem;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .services-cta .btn {
+    width: 100%;
   }
 
   .testimonials-placeholder {
