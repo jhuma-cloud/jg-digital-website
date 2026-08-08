@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://jhuma-cloud.github.io/jg-digital-website/sitemap.xml
