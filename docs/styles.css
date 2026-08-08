@@ -926,10 +926,42 @@ textarea {
 .service-desc {
   position: relative;
   z-index: 1;
-  flex: 1;
   font-size: 0.9375rem;
   color: var(--text-secondary);
   line-height: 1.68;
+}
+
+.service-highlights {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  margin-top: 1.15rem;
+  padding-top: 1.15rem;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.service-highlights li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.55rem;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--text-muted);
+  margin-bottom: 0.45rem;
+}
+
+.service-highlights li:last-child {
+  margin-bottom: 0;
+}
+
+.service-highlights li::before {
+  content: '';
+  flex-shrink: 0;
+  width: 5px;
+  height: 5px;
+  margin-top: 0.45em;
+  border-radius: 50%;
+  background: var(--accent-gold);
 }
 
 .services-cta {
@@ -949,6 +981,7 @@ textarea {
 .services-grid .service-card:nth-child(6) { transition-delay: 300ms; }
 .services-grid .service-card:nth-child(7) { transition-delay: 360ms; }
 .services-grid .service-card:nth-child(8) { transition-delay: 420ms; }
+.services-grid .service-card:nth-child(9) { transition-delay: 480ms; }
 
 /* ==========================================================================
    Testimonials
@@ -1551,6 +1584,10 @@ textarea {
 
   .service-desc {
     font-size: 0.9375rem;
+  }
+
+  .service-highlights li {
+    font-size: 0.78125rem;
   }
 
   .services-cta {
