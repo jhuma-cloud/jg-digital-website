@@ -83,7 +83,7 @@ Also update `website/script.js` the same way.
 2. Submit a test lead
 3. Check:
    - Google Sheet new row
-   - Gmail inbox: `jhumaguha2024@gmail.com`
+   - Gmail inbox: `jg.digital1926@gmail.com`
    - Subject: `New JG Digital Website Lead`
 
 ## Email contents

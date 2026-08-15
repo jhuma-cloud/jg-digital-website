@@ -19,7 +19,7 @@
 
 var SPREADSHEET_ID = 'PASTE_YOUR_SHEET_ID_HERE';
 var SHEET_NAME = 'Leads';
-var NOTIFY_EMAIL = 'jhumaguha2024@gmail.com';
+var NOTIFY_EMAIL = 'jg.digital1926@gmail.com';
 var EMAIL_SUBJECT = 'New JG Digital Website Lead';
 
 function doGet() {
